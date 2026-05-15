@@ -1,9 +1,14 @@
 import { useGSAP } from '@gsap/react'
 import gsap from 'gsap'
 import { SplitText } from 'gsap/all'
-import React from 'react'
+import React, { useRef } from 'react'
+import { useMediaQuery } from 'react-responsive'
 
 function Hero() {
+    const VideoRef = useRef()
+    const isMobile = useMediaQuery({ maxWidth: 768 })
+    const startValue = isMobile ? "top 50%" : "center 60%"
+    const endValue = isMobile ? "120% top" : "bottom top"
     useGSAP(() => {
         const heroSplit = new SplitText(".title", { type: "chars,words" })
         const ParagraphSplit = new SplitText(".subtitle", { type: "lines" })
@@ -22,19 +27,36 @@ function Hero() {
             yPercent: 100,
             duration: 1.8,
             ease: "expo.out",
-            stagger:0.06,
+            stagger: 0.06,
             delay: 1
         })
 
         gsap.timeline({
-            scrollTrigger:{
-                trigger:"#hero",
-                start:"top top",
-                end:"bottom top",
-                scrub:true
+            scrollTrigger: {
+                trigger: "#hero",
+                start: "top top",
+                end: "bottom top",
+                scrub: true
             }
-        }).to(".left-leaf",{y:-200},0)
-        .to(".right-leaf",{y:200},0)
+        }).to(".left-leaf", { y: -200 }, 0)
+            .to(".right-leaf", { y: 200 }, 0)
+
+
+        const tl = gsap.timeline({
+            scrollTrigger: {
+                trigger: "video",
+                start: startValue,
+                end: endValue,
+                scrub: true,
+                pin: true,
+            }
+        })
+
+        VideoRef.current.onloadedmetadata = () => {
+            tl.to(VideoRef.current, {
+                currentTime: VideoRef.current.duration,
+            });
+        };
     })
     return (
         <>
@@ -58,6 +80,10 @@ function Hero() {
                     </div>
                 </div>
             </section>
+
+            <div className='video absolute inset-0'>
+                <video ref={VideoRef} src="/videos/output.mp4" playsInline muted preload='auto' />
+            </div>
         </>
     )
 }

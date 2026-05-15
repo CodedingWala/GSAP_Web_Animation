@@ -10,7 +10,6 @@ function App() {
    <main>
     <NavBar/>
     <Hero/>
-    <div  className='h-dvh bg-black w-full'></div>
    </main>
   )
 }
