@@ -3,6 +3,8 @@ import { ScrollTrigger,SplitText } from 'gsap/all'
 import gsap from 'gsap'
 import NavBar from './components/NavBar'
 import Hero from './components/Hero'
+import Cocktail from './components/Cocktail'
+import About from './components/About'
 gsap.registerPlugin(ScrollTrigger,SplitText)
 
 function App() {
@@ -10,6 +12,8 @@ function App() {
    <main>
     <NavBar/>
     <Hero/>
+    <Cocktail/>
+    <About/>
    </main>
   )
 }
